@@ -3,13 +3,75 @@ window.addEventListener('load', function() {
     let register_box = document.querySelector('.register-box');
     let link_login = document.querySelector('#link-login');
     let link_reg = document.querySelector('#link-reg');
+    const loginUrl = 'http://api-breakingnews-web.itheima.net';
     // 切换注册和登录
     link_login.addEventListener('click', function() {
         login_box.style.display = 'none';
         register_box.style.display = 'block';
-    })
+    });
     link_reg.addEventListener('click', function() {
         login_box.style.display = 'block';
         register_box.style.display = 'none';
+    });
+    // 获取layui的form对象
+    let layForm = layui.form;
+    layForm.verify({
+        // 用户名验证规则
+        username: [/^[a-zA-Z0-9]{6,16}$/, '用户名格式不对'],
+        // 密码验证规则
+        password: [/^[\S]{6,12}$/, '密码必须6到12位，且不能出现空格'],
+        // 再次验证密码,形参是用户输入的value值
+        repassword: function(iptVal) {
+            let val = document.querySelector('#confirmPassword').value;
+            if (val !== iptVal) {
+                return '输入的密码不一致';
+            }
+        }
+    });
+    // 提交注册信息
+    let layer = layui.layer;
+    let form_login = document.querySelector('#form-login');
+    let regSubmit = document.querySelector('#regSubmit');
+    let xhr = new XMLHttpRequest();
+    form_login.addEventListener('submit', function(e) {
+        e.preventDefault();
+        let username = document.querySelector('#regName');
+        let repassword = document.querySelector('#confirmPassword');
+        xhr.open('POST', loginUrl + '/api/reguser');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(`username=${username.value}&password=${repassword.value}`);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                let text = JSON.parse(xhr.responseText);
+                if (text.status !== 0) {
+                    return layer.msg(text.message);
+                }
+                layer.msg('注册成功，请登录');
+                link_reg.click();
+            }
+        }
+    });
+    // 提交登录信息
+    let login_form = document.querySelector('#login-form');
+    let loginUsername = document.querySelector('#loginUsername');
+    let loginPassword = document.querySelector('#loginPassword');
+    login_form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        xhr.open('POST', loginUrl + '/api/login');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(`username=${loginUsername.value}&password=${loginPassword.value}`);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                let text = JSON.parse(xhr.responseText);
+                if (text.status !== 0) {
+                    return layer.msg('登录失败');
+                }
+                layer.msg('登录成功');
+                localStorage.setItem('token', text.token);
+                setTimeout(function() {
+                    location.href = '../../index.html';
+                }, 300)
+            }
+        }
     })
 })
