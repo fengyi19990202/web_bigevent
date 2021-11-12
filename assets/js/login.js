@@ -3,8 +3,9 @@ window.addEventListener('load', function() {
     let register_box = document.querySelector('.register-box');
     let link_login = document.querySelector('#link-login');
     let link_reg = document.querySelector('#link-reg');
+    // 根路径
     const loginUrl = 'http://api-breakingnews-web.itheima.net';
-    // 切换注册和登录
+    // 切换注册表单和登录表单
     link_login.addEventListener('click', function() {
         login_box.style.display = 'none';
         register_box.style.display = 'block';
@@ -31,10 +32,11 @@ window.addEventListener('load', function() {
     // 提交注册信息
     let layer = layui.layer;
     let form_login = document.querySelector('#form-login');
-    let regSubmit = document.querySelector('#regSubmit');
     let xhr = new XMLHttpRequest();
     form_login.addEventListener('submit', function(e) {
+        // 阻止表单提交
         e.preventDefault();
+        // 获取用户填写的账户和密码
         let username = document.querySelector('#regName');
         let repassword = document.querySelector('#confirmPassword');
         xhr.open('POST', loginUrl + '/api/reguser');
@@ -43,6 +45,7 @@ window.addEventListener('load', function() {
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 let text = JSON.parse(xhr.responseText);
+                // 不等于0表示注册失败，退出当前操作
                 if (text.status !== 0) {
                     return layer.msg(text.message);
                 }
@@ -55,21 +58,27 @@ window.addEventListener('load', function() {
     let login_form = document.querySelector('#login-form');
     let loginUsername = document.querySelector('#loginUsername');
     let loginPassword = document.querySelector('#loginPassword');
+    // 监听表单提交事件
     login_form.addEventListener('submit', function(e) {
+        // 阻止表单提交
         e.preventDefault();
+        // 将用户信息提交服务器
         xhr.open('POST', loginUrl + '/api/login');
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.send(`username=${loginUsername.value}&password=${loginPassword.value}`);
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 let text = JSON.parse(xhr.responseText);
+                // status不为0表示登录失败，退出当前操作
                 if (text.status !== 0) {
                     return layer.msg('登录失败');
                 }
                 layer.msg('登录成功');
+                // 登录成功存储token到本地存储
                 localStorage.setItem('token', text.token);
+                // 300毫秒后跳转到后台主页
                 setTimeout(function() {
-                    location.href = '../../index.html';
+                    location.href = './index.html';
                 }, 300)
             }
         }
