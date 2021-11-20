@@ -4,7 +4,7 @@ window.addEventListener('load', function() {
     let link_login = document.querySelector('#link-login');
     let link_reg = document.querySelector('#link-reg');
     // 根路径
-    const loginUrl = 'http://api-breakingnews-web.itheima.net';
+    const loginUrl = 'http://www.liulongbin.top:3007';
     // 切换注册表单和登录表单
     link_login.addEventListener('click', function() {
         login_box.style.display = 'none';

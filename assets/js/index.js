@@ -1,5 +1,5 @@
 // 项目根路径
-const loginUrl = 'http://api-breakingnews-web.itheima.net';
+const loginUrl = 'http://www.liulongbin.top:3007';
 // 获取用户信息并渲染
 function getUser() {
     // 判断是否有储存token

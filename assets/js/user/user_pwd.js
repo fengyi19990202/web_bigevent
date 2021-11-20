@@ -1,6 +1,6 @@
 window.addEventListener('load', function() {
     // 项目根路径
-    const loginUrl = 'http://api-breakingnews-web.itheima.net';
+    const loginUrl = 'http://www.liulongbin.top:3007';
     // 验证密码
     let form = layui.form;
     form.verify({

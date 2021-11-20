@@ -1,6 +1,6 @@
 $(function() {
     // 项目根路径
-    const loginUrl = 'http://api-breakingnews-web.itheima.net';
+    const loginUrl = 'http://www.liulongbin.top:3007';
     let layer = layui.layer;
     // 1.1 获取裁剪区域的 DOM 元素
     let $image = $('#image');

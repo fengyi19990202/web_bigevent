@@ -2,7 +2,7 @@ window.addEventListener('load', function() {
     let form = layui.form;
     let layer = layui.layer;
     // 项目根路径
-    const loginUrl = 'http://api-breakingnews-web.itheima.net';
+    const loginUrl = 'http://www.liulongbin.top:3007';
     // 添加表单验证
     form.verify({
         // 昵称小于6位数
